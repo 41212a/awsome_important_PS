@@ -14,3 +14,4 @@
 |백준|tree|이진 검색 트리(S1)|- 순회 결과 -> 트리에 대한 정리<br>-입력 종료 시점이 정해져있지 않을 때|[보기](https://github.com/41212a/awsome_important_PS/blob/main/tree/%EB%B0%B1%EC%A4%80_%EC%9D%B4%EC%A7%84%20%EA%B2%80%EC%83%89%20%ED%8A%B8%EB%A6%AC_S1/README.md)
 |SWEA|완전탐색|규영이와 인영이의 카드 게임(d3)|-비트 마스킹으로 순열 접근 정리<br>비트 마스킹이 더 빠르다|[보기](https://github.com/41212a/awsome_important_PS/blob/main/%EC%99%84%EC%A0%84%ED%83%90%EC%83%89/SWEA_%EA%B7%9C%EC%98%81%EC%9D%B4%EC%99%80%20%EC%9D%B8%EC%98%81%EC%9D%B4%EC%9D%98%20%EC%B9%B4%EB%93%9C%EA%B2%8C%EC%9E%84_d3/README.md)
 |백준|완전탐색|도영이가 만든 맛있는 음식(d3)|-비트 마스킹으로 부분집합 접근 정리|[보기](https://github.com/41212a/awsome_important_PS/blob/main/%EC%99%84%EC%A0%84%ED%83%90%EC%83%89/%EB%B0%B1%EC%A4%80_s1_%EB%8F%84%EC%98%81%EC%9D%B4%EA%B0%80%20%EB%A7%8C%EB%93%A0%20%EB%A7%9B%EC%9E%88%EB%8A%94%20%EC%9D%8C%EC%8B%9D/README.md)
+|백준|union find|집합의 표현(g4)|-union find 전반 정리|[보기](https://github.com/41212a/awsome_important_PS/tree/main/union%20find)
