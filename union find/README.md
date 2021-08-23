@@ -1,77 +1,17 @@
 
-# 문제
-
-백준사이트의 **G4** 난이도 1717번 문제인 **집합의 표현**이다.
-Main.java는 Union-by-rank를 미적용 하였고, Main_rank.java는 적용하였으나 메모리, 시간 면에서 크게 차이나지는 않았다.
-
-[문제보기](https://www.acmicpc.net/problem/1717)
-
-## 요약
-- Union Find에 대한 정리
-
-##   접근 방식
+# awsome_important_PS
+풀었던 알고리즘 문제 중 중요 문제(못푼 것, 배울게 많은 것, 대표 유형 등등)를 기록합니다.
+풀이에 대한 자세한 설명 보다는 접근 방식, 문제를 풀면서 알게된 점을 위주로 설명합니다.
+<br><br>
+## 기록 요약
 
 
-정말 단순한, Union Find를 구현하기만 하면 되는 문제이다. `(명령어 번호, a, b)` 가 주어지는 데, `명령어 0` 은 Union(a,b) 이고 `명령어 1`은 a와 b의 대표자(루트)가 같은 지 체크하는 명령이다. 따라서 union과 find를 잘 만들어 주었다면 너무나 쉽게 풀린다.
-
-
-
-## 이 문제를 기록하는 이유
-Union Find를 종종 사용하지만 기억에 정말 남지 않는다. 사용해야 하는 문제가 많지 않기도 하지만, 내가 직접 정리한 적이 없고 남의 블로그만 보아서 그런 것이라는 생각도 든다. 따라서 이 기회에 한번 정리해야 겠다는 생각이 들었다.
-
-### Union Find 개요
-- **Union Find**는 `Disjoint set`이라는 집합을 표현할 때 사용하는 구조이다.
-- `Disjoint set`은 **서로소 집합**이라는 뜻으로, 서로 중복 포함된 원소가 존재하지 않는 집합들을 일컫는다. (교집합이 없다, 상호 배타적이다 라고도 한다)
-- 연결 리스트로도 구현할 수 있지만, 트리로 구하는 방법이 더 효율적이라고 생각하여, 트리 위주로 서술함.
-
-### Find (및 경로 압축)
-- 트리 구조에서는 루트 노드를 대표자(최상위 부모) 로 간주하며, 일차원 배열에 각자 자신의 부모를 기록한다.
-~~~java
-public static int find(int num) {
-		if (numbers[num] == num) // 만약 자신의 값이 자기 자신일 경우, 즉 대표자(루트)일 경우 이를 리턴
-			return num;
-		
-		return numbers[num] = find(numbers[num]); // 모든 경로의 값을 대표자(루트) 한다
-	}
-~~~
-- 위 코드에는 **경로 압축** 기법도 포함되어 있는 데, find 연산을 하면 재귀 연산을 통해 부모를 찾게 된다. 이 때, 지나온 모든 경로의 부모를 최상위 부모로 하여 트리의 높이 자체를 낮춰주는 것. 따라서 O(n) `(n-부모까지의 거리)` 이었던 연산 시간을 압축 이후엔 O(1)로 줄일 수 있다.
-(만약 트리가 root-1-2-3 으로 높이 3인 트리였다면, 경로 압축 후엔 root-1 root-2 root-3 으로 각각 뻗어 나가 높이가 1이 된다) 
-- 해당 문제에선 경로 압축을 하지 않을 경우 아예 **시간초과**가 발생하였다.
-
-
-### Union
-- Union(a, b) 연산을 통해 a가 속한 집합과 b가 속한 집합을 합칠 수 있다. 
-- 이 때 find(a), find(b) 연산을 통해 a와 b의 부모를 먼저 찾고, 둘의 부모가 같지 않을 때에만 Union을 수행한다.
-~~~java
-	public static void union(int a, int b) {
-		a = find(a); // a의 부모를 찾는다
-		b = find(b); // b의 부모를 찾는다
-		
-		if (a==b) // 둘의 부모가 같을 경우, union을 종료한다
-			return;
-		
-		numbers[a] = numbers[b];
-	}
-~~~
-
-### Union by rank
-- 트리의 높이가 연산 속도에 영향을 주기 때문에, 높이가 낮은 트리에 높이가 높은 트리를 계속해서 붙이지 않고, 높은 트리에 낮은 트리를 붙여 전체 높이를 줄인다.
-- 경로 압축 등의 이유로 완벽하게 트리의 높이와 동일한 의미를 가지지는 않기 때문에, 대략적인 높이를 표현한다 하여 rank라고 이름 짓는다.
-~~~java
-	public static void union(int a, int b) {
-		a = find(a); // a의 부모를 찾는다
-		b = find(b); // b의 부모를 찾는다
-		
-		if (a==b) // 둘의 부모가 같을 경우, union을 종료한다
-			return;
-		
-		// Union by rank
-		// rank가 더 높은 쪽에 낮은 쪽을 합친다
-		if (rank[a] < rank[b]) numbers[a] = b;
-		else if (rank[a] >= rank[b]) numbers[b] = a;
-		
-		if (rank[a] == rank[b])
-			rank[a]++; // 같은 랭크 r을 가지는 두 트리가 합쳐질 경우 r+1의 트리가 만들어진다.
-	}
-~~~
-본 문제에서는 Union by rank와 단순 Union이 큰 차이를 보이지 않았다. 작정하고 case를 만들지 않는 이상(몇 백만번 모두 작은 트리에 큰 트리를 합치는 등의 case), 해당 기법의 적용 유무가 코딩 테스트에서는 크게 작용하진 않을 것으로 예상된다. 다만 시간을 줄이는 기법들은 일단 기억해 두는 것이 좋으니, 눈여겨볼 만 하다고 판단했다.
+|사이트|알고리즘|제목(난이도)|<center>요약<center>|README 링크|
+|:-:|:---:|:---:|:---:|:---:|
+|SWEA|DFS|정사각형 방 (d4)|**~~다시 풀기 (8.20)~~**<br>완료(8.20, 소요시간 20분)|[보기](https://github.com/41212a/awsome_important_PS/tree/main/dfs/SWEA_%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95%20%EB%B0%A9_D4#readme)
+|SWEA|DFS|최대상금 (d3)|- N이 작으면 완탐 먼저 고려<br>- 너무 복잡하면 의심하기|[보기](https://github.com/41212a/awsome_important_PS/tree/main/dfs/SWEA_%EC%B5%9C%EB%8C%80%20%EC%83%81%EA%B8%88_D3#readme)
+|백준|tree|트리의 부모 찾기(S2)|- 2차원 vector대신 2차원 AL<br>- 더 좋은 방법 찾으면 갱신|[보가](https://github.com/41212a/awsome_important_PS/blob/main/tree/%EB%B0%B1%EC%A4%80_%ED%8A%B8%EB%A6%AC%EC%9D%98%20%EB%B6%80%EB%AA%A8%20%EC%B0%BE%EA%B8%B0_S2/README.md)
+|백준|tree|이진 검색 트리(S1)|- 순회 결과 -> 트리에 대한 정리<br>-입력 종료 시점이 정해져있지 않을 때|[보기](https://github.com/41212a/awsome_important_PS/blob/main/tree/%EB%B0%B1%EC%A4%80_%EC%9D%B4%EC%A7%84%20%EA%B2%80%EC%83%89%20%ED%8A%B8%EB%A6%AC_S1/README.md)
+|SWEA|완전탐색|규영이와 인영이의 카드 게임(d3)|-비트 마스킹으로 순열 접근 정리<br>비트 마스킹이 더 빠르다|[보기](https://github.com/41212a/awsome_important_PS/blob/main/%EC%99%84%EC%A0%84%ED%83%90%EC%83%89/SWEA_%EA%B7%9C%EC%98%81%EC%9D%B4%EC%99%80%20%EC%9D%B8%EC%98%81%EC%9D%B4%EC%9D%98%20%EC%B9%B4%EB%93%9C%EA%B2%8C%EC%9E%84_d3/README.md)
+|백준|완전탐색|도영이가 만든 맛있는 음식(d3)|-비트 마스킹으로 부분집합 접근 정리|[보기](https://github.com/41212a/awsome_important_PS/blob/main/%EC%99%84%EC%A0%84%ED%83%90%EC%83%89/%EB%B0%B1%EC%A4%80_s1_%EB%8F%84%EC%98%81%EC%9D%B4%EA%B0%80%20%EB%A7%8C%EB%93%A0%20%EB%A7%9B%EC%9E%88%EB%8A%94%20%EC%9D%8C%EC%8B%9D/README.md)
+|백준|union find|집합의 표현(g4)|-union find 전반 정리|[보기](https://github.com/41212a/awsome_important_PS/tree/main/union%20find)
