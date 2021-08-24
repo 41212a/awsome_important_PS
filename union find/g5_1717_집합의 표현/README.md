@@ -8,6 +8,7 @@ Main.java는 Union-by-rank를 미적용 하였고, Main_rank.java는 적용하�
 
 ## 요약
 - Union Find에 대한 정리
+- 경로 압축 기법과 Union by rank 기법. -> 경로 압축 기법은 적용하지 않을 경우 시간초과 발생, Union-by-rank는 크게 차이 없음
 
 ##   접근 방식
 
